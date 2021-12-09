@@ -60,7 +60,7 @@ fun s:set_props()
     let b:auto_space_after_char = 1 " Put auto space after comment char, if line is not empty
     " Field placeholders according to doc comment syntax, if available
     let b:field_file = 'File'
-    let b:field_license_id = 'License'
+    let b:field_license_id = 'SPDX-License-Identifer'
     let b:field_author = 'Author'
     let b:field_date = 'Date'
     let b:field_modified_date = 'Last-Modified'
