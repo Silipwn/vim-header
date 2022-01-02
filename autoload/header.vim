@@ -19,6 +19,10 @@ endif
 if !exists('g:header_field_author_email')
     let g:header_field_author_email = ''
 endif
+" 2021-12-31T11:55:22-0500: silipwn: Adding description field
+if !exists('g:header_field_desc')
+    let g:header_field_desc = ''
+endif
 if !exists('g:header_field_timestamp')
     let g:header_field_timestamp = 1
 endif
@@ -35,7 +39,7 @@ if !exists('g:header_cfg_comment_char')
     let g:header_cfg_comment_char = '#'
 endif
 if !exists('g:header_max_size')
-    let g:header_max_size = 7
+    let g:header_max_size = 8
 endif
 if !exists('g:header_alignment')
     let g:header_alignment = 1
@@ -62,6 +66,7 @@ fun s:set_props()
     let b:field_file = 'File'
     let b:field_license_id = 'SPDX-License-Identifer'
     let b:field_author = 'Author'
+    let b:field_desc = 'Description'
     let b:field_date = 'Date'
     let b:field_modified_date = 'Last-Modified'
     let b:field_modified_by = 'Last Modified By'
@@ -246,6 +251,7 @@ fun s:set_props()
         let b:first_line = '<?php'
         let b:first_line_pattern = '<?php'
         let b:field_author = '@author'
+        let b:field_dec = '@desc'
     endif
     if b:filetype == 'css'
         let b:min_comment_begin = '/*!'
@@ -260,6 +266,7 @@ fun s:set_props()
         let b:min_comment_begin = '/*!'
         let b:field_file = '@file'
         let b:field_author = '@author'
+        let b:field_desc = '@desc'
     endif
 
     " For license texts, if there is a empty line, avoid trailing white space
@@ -325,6 +332,10 @@ fun s:add_header()
             let email = ''
         endif
         call append(i, b:comment_char . b:field_author . ' ' . g:header_field_author . email)
+        let i += 1
+    endif
+    if g:header_field_desc != ''
+        call append(i, b:comment_char . b:field_desc . ' ' . g:header_field_desc)
         let i += 1
     endif
     if g:header_field_timestamp
@@ -475,6 +486,9 @@ fun s:add_min_header()
         endif
         let header_line .= ' ' . b:field_author . ' "' . g:header_field_author . email . '"'
     endif
+    if g:header_field_desc != ''
+        let header_line .= ' ' . b:field_desc. ' "' . g:header_field_desc . '"'
+    endif
     if g:header_field_timestamp
         let header_line .= ' ' . b:field_date . ' ' . strftime(g:header_field_timestamp_format)
     endif
@@ -590,6 +604,11 @@ fun s:get_user_headers()
         call add(headers_fields, b:field_author)
     endif
 
+    " Description header
+    if g:header_field_desc  != ''
+        call add(headers_fields, b:field_desc)
+    endif
+
     " Date header
     if g:header_field_timestamp
         call add(headers_fields, b:field_date)
@@ -655,6 +674,15 @@ fun s:update_fields(longer_header_length)
                 \ s:align_field_with_spaces(b:field_author, a:longer_header_length)
         endif
         let b:field_author = b:field_author . b:field_separator
+    endif
+
+    " 2022-01-02T00:54:32-0500: silipwn: Adding desc update mechanism
+    if match(b:user_headers, b:field_desc) != -1
+        if g:header_alignment
+            let b:field_desc =
+                \ s:align_field_with_spaces(b:field_desc, a:longer_header_length)
+        endif
+        let b:field_desc = b:field_desc . b:field_separator
     endif
 
     if match(b:user_headers, b:field_date) != -1

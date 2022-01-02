@@ -7,6 +7,7 @@ Table of Contents
 
 * [Install](#install)
 * [Usage](#usage)
+* [Modifications](#modifications)
 * [Examples](#examples)
 * [Commands](#commands)
 * [Settings](#settings)
@@ -37,6 +38,12 @@ map <F4> :AddHeader<CR>
 
 Pressing `F4` in normal mode will add a brief author information at the top of
 your buffer.
+
+Modifications
+-------------
+
+- The license is tagged with SPDX identifier
+- An additional field called `Description` is created to indicate what is the file created for
 
 Examples
 --------
