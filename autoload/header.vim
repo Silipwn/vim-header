@@ -20,8 +20,9 @@ if !exists('g:header_field_author_email')
     let g:header_field_author_email = ''
 endif
 " 2021-12-31T11:55:22-0500: silipwn: Adding description field
+" 2022-02-12T10:10:26-0500: silipwn: Adding default description
 if !exists('g:header_field_desc')
-    let g:header_field_desc = ''
+    let g:header_field_desc = 'This file is responsible for <insert task>'
 endif
 if !exists('g:header_field_timestamp')
     let g:header_field_timestamp = 1
