@@ -44,6 +44,8 @@ Modifications
 
 - The license is tagged with SPDX identifier
 - An additional field called `Description` is created to indicate what is the file created for
+- An additional field called for `SPDX-FileCopyrightText` is created to add custom text with `(C) (Current Year)` 
+    - Default value is the author name
 
 Examples
 --------
