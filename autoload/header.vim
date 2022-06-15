@@ -315,6 +315,16 @@ fun s:add_header()
     endif
 
     " Fill user's information
+    if g:header_field_license_id != ''
+        call append(i, b:comment_char . b:field_license_id . ' ' . g:header_field_license_id)
+        let i += 1
+    endif
+    if g:header_spdx_text != ''
+        if g:header_field_author != ''
+            call append(i, b:comment_char . b:spdx_text . ' (C) ' . strftime("%Y") . ' ' . g:header_spdx_text)
+        endif
+        let i += 1
+    endif
     if g:header_field_copyright != ''
       call append(i, b:comment_char. g:header_field_copyright)
       let i += 1
@@ -324,16 +334,6 @@ fun s:add_header()
             call append(i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
         else
             call append(i, b:comment_char . b:field_file . ' ' . split(expand('%s:t'),'/')[-1])
-        endif
-        let i += 1
-    endif
-    if g:header_field_license_id != ''
-        call append(i, b:comment_char . b:field_license_id . ' ' . g:header_field_license_id)
-        let i += 1
-    endif
-    if g:header_spdx_text != ''
-        if g:header_field_author != ''
-            call append(i, b:comment_char . b:spdx_text . ' (C) ' . strftime("%Y") . ' ' . g:header_spdx_text)
         endif
         let i += 1
     endif
@@ -703,10 +703,10 @@ fun s:update_fields(longer_header_length)
     endif
 
     if match(b:user_headers, b:spdx_text) != -1 
-        if g:header_alignment
-            let b:spdx_text =
-                \ s:align_field_with_spaces(b:spdx_text, a:longer_header_length)
-        endif
+        " if g:header_alignment
+            " let b:spdx_text =
+            "     \ s:align_field_with_spaces(b:spdx_text, a:longer_header_length)
+        " endif
         let b:spdx_text = b:spdx_text . b:field_separator
     endif
 
