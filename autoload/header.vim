@@ -24,6 +24,9 @@ endif
 if !exists('g:header_field_desc')
     let g:header_field_desc = 'This file is responsible for <insert task>'
 endif
+if !exists('g:header_spdx_text')
+    let g:header_spdx_text = g:header_field_author
+endif
 if !exists('g:header_field_timestamp')
     let g:header_field_timestamp = 1
 endif
@@ -67,6 +70,7 @@ fun s:set_props()
     let b:field_file = 'File'
     let b:field_license_id = 'SPDX-License-Identifer'
     let b:field_author = 'Author'
+    let b:spdx_text = 'SPDX-FileCopyrightText'
     let b:field_desc = 'Description'
     let b:field_date = 'Date'
     let b:field_modified_date = 'Last-Modified'
@@ -325,6 +329,12 @@ fun s:add_header()
     endif
     if g:header_field_license_id != ''
         call append(i, b:comment_char . b:field_license_id . ' ' . g:header_field_license_id)
+        let i += 1
+    endif
+    if g:header_spdx_text != ''
+        if g:header_field_author != ''
+            call append(i, b:comment_char . b:spdx_text . ' (C) ' . strftime("%Y") . ' ' . g:header_spdx_text)
+        endif
         let i += 1
     endif
     if g:header_field_author != ''
@@ -611,6 +621,11 @@ fun s:get_user_headers()
         call add(headers_fields, b:field_desc)
     endif
 
+    " SPDX Stuff
+    if g:header_spdx_text != ''
+        call add(headers_fields, b:spdx_text)
+    endif
+
     " Date header
     if g:header_field_timestamp
         call add(headers_fields, b:field_date)
@@ -685,6 +700,14 @@ fun s:update_fields(longer_header_length)
                 \ s:align_field_with_spaces(b:field_desc, a:longer_header_length)
         endif
         let b:field_desc = b:field_desc . b:field_separator
+    endif
+
+    if match(b:user_headers, b:spdx_text) != -1 
+        if g:header_alignment
+            let b:spdx_text =
+                \ s:align_field_with_spaces(b:spdx_text, a:longer_header_length)
+        endif
+        let b:spdx_text = b:spdx_text . b:field_separator
     endif
 
     if match(b:user_headers, b:field_date) != -1
