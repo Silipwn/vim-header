@@ -73,7 +73,7 @@ fun s:set_props()
     let b:spdx_text = 'SPDX-FileCopyrightText'
     let b:field_desc = 'Description'
     let b:field_date = 'Date'
-    let b:field_modified_date = 'Last-Modified'
+    let b:field_modified_date = 'Last Modified'
     let b:field_modified_by = 'Last Modified By'
     let b:field_separator = ':'
 
